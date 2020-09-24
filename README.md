@@ -1,5 +1,7 @@
 # ExcelWeaver
 
+![exceweaver](./misc/excelweaver.jpg)
+
 A simple library for manipulate excel file in java.
 
 ## TL:DR
