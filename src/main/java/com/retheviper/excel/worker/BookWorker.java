@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Worker for manipulate excel file.
@@ -74,20 +77,30 @@ public class BookWorker implements AutoCloseable {
      * Get {@link SheetWorker}.
      *
      * @param sheetName
-     * @return
+     * @return SheetWorker
      */
     private SheetWorker getSheetWorker(final String sheetName) {
-        return this.bookDef.getSheetDefs().stream().filter(sheetDef -> sheetDef.getName().equals(sheetName)).findFirst().map(this::getSheetWorker).orElseThrow(NullPointerException::new);
+        return searchSheetDef(sheetDef -> Objects.equals(sheetDef.getName(), sheetName)).orElseThrow(NullPointerException::new);
     }
 
     /**
      * Get {@link SheetWorker}.
      *
      * @param dataClass
-     * @return
+     * @return SheetWorker
      */
     private SheetWorker getSheetWorker(final Class<?> dataClass) {
-        return this.bookDef.getSheetDefs().stream().filter(sheetDef -> sheetDef.getDataClass().equals(dataClass)).findFirst().map(this::getSheetWorker).orElseThrow(NullPointerException::new);
+        return searchSheetDef(sheetDef -> Objects.equals(sheetDef.getDataClass(), dataClass)).orElseThrow(NullPointerException::new);
+    }
+
+    /**
+     * Search {@link SheetDef} with condition and map to {@link SheetWorker}.
+     *
+     * @param condition
+     * @return
+     */
+    private Optional<SheetWorker> searchSheetDef(final Predicate<SheetDef> condition) {
+        return this.bookDef.getSheetDefs().stream().filter(condition).findAny().map(this::getSheetWorker);
     }
 
     /**
