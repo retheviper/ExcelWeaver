@@ -11,10 +11,7 @@ import org.apache.poi.ss.util.CellAddress;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +39,7 @@ public class BookDef {
      * @param dataClass
      */
     public void removeSheet(final Class<?> dataClass) {
-        this.sheetDefs.removeIf(sheetDef -> sheetDef.getDataClass().equals(dataClass));
+        this.sheetDefs.removeIf(sheetDef -> Objects.equals(sheetDef.getDataClass(), dataClass));
     }
 
     /**
@@ -53,7 +50,7 @@ public class BookDef {
      * @return
      */
     public SheetDef getSheetDef(final Class<?> dataClass) {
-        return this.sheetDefs.stream().filter(sheetDef -> sheetDef.getDataClass().equals(dataClass)).findAny().orElseThrow(NullPointerException::new);
+        return this.sheetDefs.stream().filter(sheetDef -> Objects.equals(sheetDef.getDataClass(), dataClass)).findAny().orElseThrow(NullPointerException::new);
     }
 
     /**
@@ -92,7 +89,7 @@ public class BookDef {
         }
         final RowDef rowDef = new RowDef(Arrays.stream(dataClass.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Column.class)).map(this::fieldToCellDef).collect(Collectors.toList()));
         final Sheet sheet = dataClass.getAnnotation(Sheet.class);
-        return new SheetDef(rowDef, !sheet.name().equals("") ? sheet.name() : dataClass.getSimpleName(), sheet.dataStartIndex(), dataClass);
+        return new SheetDef(rowDef, !Objects.equals("", sheet.name()) ? sheet.name() : dataClass.getSimpleName(), sheet.dataStartIndex(), dataClass);
     }
 
     /**
@@ -104,7 +101,7 @@ public class BookDef {
     private CellDef fieldToCellDef(final Field field) {
         field.setAccessible(true);
         final Column column = field.getAnnotation(Column.class);
-        return new CellDef(!column.name().equals("") ? column.name() : field.getName(), defineFieldType(field.getType()), new CellAddress(column.position() + 1).getColumn());
+        return new CellDef(!Objects.equals("", column.name()) ? column.name() : field.getName(), defineFieldType(field.getType()), new CellAddress(column.position() + 1).getColumn());
     }
 
 
