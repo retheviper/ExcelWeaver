@@ -4,10 +4,12 @@ import com.retheviper.excel.definition.CellDef;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Worker for manipulate cell.
@@ -51,22 +53,19 @@ class CellWorker {
                     field.set(object, this.cell.getNumericCellValue());
                     break;
                 case STRING:
-                    field.set(object, this.cell.getStringCellValue() != "" ? this.cell.getStringCellValue() : null);
+                    field.set(object, this.cell.getStringCellValue().isBlank() ? null : this.cell.getStringCellValue());
                     break;
                 case BOOLEAN:
                     field.set(object, this.cell.getBooleanCellValue());
                     break;
-                case LOCALDATETIME:
+                case LOCAL_DATE_TIME:
                     field.set(object, this.cell.getLocalDateTimeCellValue());
                     break;
+                case LOCAL_DATE:
+                    field.set(object, this.cell.getLocalDateTimeCellValue().toLocalDate());
+                    break;
                 case DATE:
-                    try {
-                        field.set(object, this.cell.getDateCellValue());
-                    } catch (IllegalStateException e) {
-                        if (e.getMessage().contains("STRING")) {
-                            field.set(object, new SimpleDateFormat(dateFormat).parse(this.cell.getStringCellValue()));
-                        }
-                    }
+                    field.set(object, DateUtil.getJavaDate(this.cell.getNumericCellValue()));
                     break;
             }
         } catch (Exception e) {
@@ -102,11 +101,14 @@ class CellWorker {
                 case BOOLEAN:
                     this.cell.setCellValue((boolean) objectValue);
                     break;
-                case LOCALDATETIME:
+                case LOCAL_DATE_TIME:
                     this.cell.setCellValue((LocalDateTime) objectValue);
                     break;
+                case LOCAL_DATE:
+                    this.cell.setCellValue((LocalDate) objectValue);
+                    break;
                 case DATE:
-                    this.cell.setCellValue(new SimpleDateFormat(dateFormat).format(objectValue));
+                    this.cell.setCellValue(DateUtil.getExcelDate((Date) objectValue));
                     break;
             }
         } catch (Exception e) {

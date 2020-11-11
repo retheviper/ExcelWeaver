@@ -121,7 +121,7 @@ public class BookDef {
         } else if (Date.class.equals(fieldType)) {
             return DataType.DATE;
         } else if (LocalDateTime.class.equals(fieldType)) {
-            return DataType.LOCALDATETIME;
+            return DataType.LOCAL_DATE_TIME;
         } else if (Boolean.TYPE.equals(fieldType) || Boolean.class.equals(fieldType)) {
             return DataType.BOOLEAN;
         } else {
