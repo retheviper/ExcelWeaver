@@ -24,6 +24,36 @@ public class BookDef {
     private final List<SheetDef> sheetDefs = new ArrayList<>();
 
     /**
+     * Add definition of sheet based on current data classes. The data class must be contains {@link Sheet} and {@link Column}.
+     *
+     * @param dataClasses
+     * @return BookDef
+     * @throws Exception
+     */
+    public static BookDef of(final List<Class<?>> dataClasses) throws Exception {
+        final BookDef bookDef = new BookDef();
+        for (Class<?> dataClass : dataClasses) {
+            bookDef.addSheet(dataClass);
+        }
+        return bookDef;
+    }
+
+    /**
+     * Add definition of sheet based on current data classes. The data class must be contains {@link Sheet} and {@link Column}.
+     *
+     * @param dataClasses
+     * @return BookDef
+     * @throws Exception
+     */
+    public static BookDef of(final Class<?>... dataClasses) throws Exception {
+        final BookDef bookDef = new BookDef();
+        for (Class<?> dataClass : dataClasses) {
+            bookDef.addSheet(dataClass);
+        }
+        return bookDef;
+    }
+
+    /**
      * Add definition of sheet based on current data class. The data class must be contains {@link Sheet} and {@link Column}.
      *
      * @param dataClass

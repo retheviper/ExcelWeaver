@@ -20,7 +20,7 @@ A simple library for manipulate excel file in java.
 
 ```java
 @Sheet(dataStartIndex = 2)
-public class Contract {
+public class Contract { // Class name will be sheets name
 
     @Column(position = "B")
     private String name;
@@ -33,11 +33,14 @@ public class Contract {
 }
 ```
 
-### Add sheet to book
+### Make definition of book
 
 ```java
-BookDef bookDef = new BookDef();
-bookDef.addSheet(Contract.class);
+// Create from array or list of SheetDef classes
+BookDef bookDef = BookDef.of(Contract.class, Message.class);
+
+// add more sheet
+bookDef.addSheet(Salary.class);
 ```
 
 ### Read file
@@ -54,6 +57,7 @@ try (BookWorker worker = bookDef.openBook(OUTPUT_FILE_PATH)) {
 ### Write file
 
 ```java
+List<Contract> data = ...
 try (BookWorker worker = bookDef.openBook(TEMPLATE_FILE_PATH, OUTPUT_FILE_PATH)) {
     worker.write(data);
 } catch (IOException e) {
