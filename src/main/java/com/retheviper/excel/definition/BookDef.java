@@ -119,7 +119,7 @@ public class BookDef {
         }
         final RowDef rowDef = new RowDef(Arrays.stream(dataClass.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Column.class)).map(this::fieldToCellDef).collect(Collectors.toList()));
         final Sheet sheet = dataClass.getAnnotation(Sheet.class);
-        return new SheetDef(rowDef, !Objects.equals("", sheet.name()) ? sheet.name() : dataClass.getSimpleName(), sheet.dataStartIndex(), dataClass);
+        return new SheetDef(rowDef, !sheet.name().isBlank() ? sheet.name() : dataClass.getSimpleName(), sheet.dataStartIndex(), dataClass);
     }
 
     /**
@@ -131,7 +131,7 @@ public class BookDef {
     private CellDef fieldToCellDef(final Field field) {
         field.setAccessible(true);
         final Column column = field.getAnnotation(Column.class);
-        return new CellDef(!Objects.equals("", column.name()) ? column.name() : field.getName(), defineFieldType(field.getType()), new CellAddress(column.position() + 1).getColumn());
+        return new CellDef(!column.name().isBlank() ? column.name() : field.getName(), defineFieldType(field.getType()), new CellAddress(column.position() + 1).getColumn());
     }
 
 
