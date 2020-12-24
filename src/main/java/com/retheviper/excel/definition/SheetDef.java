@@ -24,6 +24,11 @@ public class SheetDef {
     private final String name;
 
     /**
+     * Sheet's index.
+     */
+    private final int index;
+
+    /**
      * Row index which data part begins.
      */
     private final int dataStartIndex;

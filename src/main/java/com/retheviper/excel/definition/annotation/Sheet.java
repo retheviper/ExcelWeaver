@@ -18,6 +18,11 @@ public @interface Sheet {
     String name() default "";
 
     /**
+     * Sheet's index.
+     */
+    int index() default -1;
+
+    /**
      * Row index which data part begins.
      */
     int dataStartIndex() default 0;

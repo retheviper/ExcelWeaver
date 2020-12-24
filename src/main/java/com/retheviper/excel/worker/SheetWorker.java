@@ -56,7 +56,7 @@ class SheetWorker {
      * @param rowIndex
      * @return
      */
-    private RowWorker getRowWorker(final int rowIndex) {
+    public RowWorker getRowWorker(final int rowIndex) {
         return new RowWorker(getRowDef(), getRow(rowIndex));
     }
 
@@ -114,5 +114,4 @@ class SheetWorker {
             }
         }).collect(Collectors.toUnmodifiableList());
     }
-
 }

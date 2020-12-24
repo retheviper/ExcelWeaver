@@ -66,21 +66,21 @@ public class BookWorker implements AutoCloseable {
     /**
      * Get {@link SheetWorker}.
      *
-     * @param sheetDef
-     * @return
+     * @param sheetName
+     * @return SheetWorker
      */
-    private SheetWorker getSheetWorker(final SheetDef sheetDef) {
-        return new SheetWorker(sheetDef, this.workbook.getSheet(sheetDef.getName()));
+    public SheetWorker getSheetWorker(final String sheetName) {
+        return searchSheetDef(sheetDef -> Objects.equals(sheetDef.getName(), sheetName)).orElseThrow(NullPointerException::new);
     }
 
     /**
      * Get {@link SheetWorker}.
      *
-     * @param sheetName
+     * @param index
      * @return SheetWorker
      */
-    private SheetWorker getSheetWorker(final String sheetName) {
-        return searchSheetDef(sheetDef -> Objects.equals(sheetDef.getName(), sheetName)).orElseThrow(NullPointerException::new);
+    public SheetWorker getSheetWorker(final int index) {
+        return searchSheetDef(sheetDef -> index == sheetDef.getIndex()).orElseThrow(NullPointerException::new);
     }
 
     /**
@@ -89,7 +89,7 @@ public class BookWorker implements AutoCloseable {
      * @param dataClass
      * @return SheetWorker
      */
-    private SheetWorker getSheetWorker(final Class<?> dataClass) {
+    public SheetWorker getSheetWorker(final Class<?> dataClass) {
         return searchSheetDef(sheetDef -> Objects.equals(sheetDef.getDataClass(), dataClass)).orElseThrow(NullPointerException::new);
     }
 
@@ -101,6 +101,16 @@ public class BookWorker implements AutoCloseable {
      */
     private Optional<SheetWorker> searchSheetDef(final Predicate<SheetDef> condition) {
         return this.bookDef.getSheetDefs().stream().filter(condition).findAny().map(this::getSheetWorker);
+    }
+
+    /**
+     * Get {@link SheetWorker}.
+     *
+     * @param sheetDef
+     * @return
+     */
+    private SheetWorker getSheetWorker(final SheetDef sheetDef) {
+        return new SheetWorker(sheetDef, sheetDef.getIndex() != -1 ? this.workbook.getSheetAt(sheetDef.getIndex()) : this.workbook.getSheet(sheetDef.getName()));
     }
 
     /**
@@ -127,11 +137,22 @@ public class BookWorker implements AutoCloseable {
     /**
      * Read data from sheet as list.
      *
+     * @param index
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> read(final int index) {
+        return getSheetWorker(index).sheetToList();
+    }
+
+    /**
+     * Read data from sheet as list.
+     *
      * @param dataClass
      * @param <T>
      * @return
      */
-    public <T> List<T> read(final Class<?> dataClass) {
+    public <T> List<T> read(final Class<T> dataClass) {
         return getSheetWorker(dataClass).sheetToList();
     }
 

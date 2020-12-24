@@ -119,7 +119,7 @@ public class BookDef {
         }
         final RowDef rowDef = new RowDef(Arrays.stream(dataClass.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Column.class)).map(this::fieldToCellDef).collect(Collectors.toList()));
         final Sheet sheet = dataClass.getAnnotation(Sheet.class);
-        return new SheetDef(rowDef, !sheet.name().isBlank() ? sheet.name() : dataClass.getSimpleName(), sheet.dataStartIndex(), dataClass);
+        return new SheetDef(rowDef, !sheet.name().isBlank() ? sheet.name() : dataClass.getSimpleName(), sheet.index(), sheet.dataStartIndex(), dataClass);
     }
 
     /**

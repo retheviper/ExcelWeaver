@@ -60,7 +60,7 @@ class RowWorker {
      * @param cellIndex
      * @return
      */
-    private CellWorker getCellWorker(final int cellIndex) {
+    public CellWorker getCellWorker(final int cellIndex) {
         return new CellWorker(getCellDef(cellIndex), this.row.getCell(cellIndex));
     }
 

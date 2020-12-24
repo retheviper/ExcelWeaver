@@ -28,11 +28,6 @@ class CellWorker {
     private final Cell cell;
 
     /**
-     * Format for date.
-     */
-    private final String dateFormat = "yyyy/MM/dd";
-
-    /**
      * Read cell's value and write into object's field.
      *
      * @param object
