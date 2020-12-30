@@ -110,7 +110,7 @@ public class BookWorker implements AutoCloseable {
      * @return
      */
     private SheetWorker getSheetWorker(final SheetDef sheetDef) {
-        return new SheetWorker(sheetDef, sheetDef.getIndex() != -1 ? this.workbook.getSheetAt(sheetDef.getIndex()) : this.workbook.getSheet(sheetDef.getName()));
+        return new SheetWorker(sheetDef, sheetDef.getIndex() > -1 ? this.workbook.getSheetAt(sheetDef.getIndex()) : this.workbook.getSheet(sheetDef.getName()));
     }
 
     /**
