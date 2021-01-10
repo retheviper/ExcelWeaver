@@ -12,7 +12,9 @@ A simple library for manipulate excel file in java.
 
 ## To build
 
-`./gradlew jar`
+`./gradlew shadowJar`
+
+(And Jar will be found in `build/libs`)
 
 ## To Use
 
