@@ -4,7 +4,9 @@
 
 A simple library for manipulate excel file in java.
 
-## TL:DR
+And there is Kotlin version of this library. [Check this out](https://github.com/retheviper/ExcelWeaverKotlin).
+
+## TL;DR
 
 `*.xlsx` → `java.util.List`
 
