@@ -16,13 +16,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateData {
+public class TestBase {
 
-    private static final DecimalFormat numberFormat = new DecimalFormat("0000");
+    private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0000");
 
-    public static List<Contract> getCreatedData() {
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
+
+    public static List<Contract> getTestData() {
         return IntStream.range(0, 10000).mapToObj(number -> {
-            final String formatted = numberFormat.format(number);
+            final String formatted = NUMBER_FORMAT.format(number);
             final Contract contract = new Contract();
             final String name = String.format("People%s", formatted);
             contract.setName(name);
@@ -41,10 +43,9 @@ public class CreateData {
     }
 
     private static Date createRandomDate() {
-        final DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
-            final long startMillis = format.parse("1970/01/01").getTime();
-            final long endMillis = format.parse("2000/12/31").getTime();
+            final long startMillis = DATE_FORMAT.parse("1970/01/01").getTime();
+            final long endMillis = DATE_FORMAT.parse("2000/12/31").getTime();
             final long randomMillisSinceEpoch = ThreadLocalRandom
                     .current()
                     .nextLong(startMillis, endMillis);

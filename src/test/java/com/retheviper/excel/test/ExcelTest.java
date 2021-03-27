@@ -3,7 +3,7 @@ package com.retheviper.excel.test;
 
 import com.retheviper.excel.definition.BookDef;
 import com.retheviper.excel.test.header.Contract;
-import com.retheviper.excel.test.testbase.CreateData;
+import com.retheviper.excel.test.testbase.TestBase;
 import com.retheviper.excel.worker.BookWorker;
 import org.junit.jupiter.api.*;
 
@@ -20,21 +20,21 @@ public class ExcelTest {
 
     private static final String OUTPUT_PATH = "src/test/resources/temp/output.xlsx";
 
-    private static final BookDef bookDef = new BookDef();
+    private static final BookDef BOOK_DEF = new BookDef();
 
-    private static final List<Contract> data = CreateData.getCreatedData();
+    private static final List<Contract> TEST_DATA = TestBase.getTestData();
 
     @BeforeAll
     public static void setup() {
-        Assertions.assertDoesNotThrow(() -> bookDef.addSheet(Contract.class));
+        Assertions.assertDoesNotThrow(() -> BOOK_DEF.addSheet(Contract.class));
     }
 
     @Test
     @Order(1)
     public void writeTest() {
         Assertions.assertDoesNotThrow(() -> {
-            try (BookWorker worker = bookDef.openBook(TEMPLATE_PATH, OUTPUT_PATH)) {
-                worker.write(data);
+            try (BookWorker worker = BOOK_DEF.openBook(TEMPLATE_PATH, OUTPUT_PATH)) {
+                worker.write(TEST_DATA);
             }
         });
     }
@@ -44,11 +44,11 @@ public class ExcelTest {
     public void readTest() {
         Assertions.assertDoesNotThrow(() -> {
             List<Contract> list;
-            try (BookWorker worker = bookDef.openBook(OUTPUT_PATH)) {
+            try (BookWorker worker = BOOK_DEF.openBook(OUTPUT_PATH)) {
                 list = worker.read(Contract.class);
             }
-            IntStream.range(0, data.size()).forEach(index -> {
-                final Contract expected = data.get(index);
+            IntStream.range(0, TEST_DATA.size()).forEach(index -> {
+                final Contract expected = TEST_DATA.get(index);
                 final Contract actual = list.get(index);
                 Assertions.assertEquals(expected.getName(), actual.getName());
                 Assertions.assertEquals(expected.getCompanyPhone(), actual.getCompanyPhone());
@@ -65,9 +65,8 @@ public class ExcelTest {
         });
     }
 
-
     @AfterAll
     public static void deleteFile() throws IOException {
-        Files.delete(Path.of(OUTPUT_PATH));
+        Files.deleteIfExists(Path.of(OUTPUT_PATH));
     }
 }
