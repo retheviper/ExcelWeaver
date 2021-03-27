@@ -22,22 +22,36 @@ public class TestBase {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
 
+    private static final String NAME_FORMAT = "People%s";
+
+    private static final String PHONE_FORMAT = "(000) 0000-%s";
+
+    private static final String EMAIL_FORMAT = "%s@example.com";
+
+    private static final String ADDRESS = "somewhere";
+
+    private static final String CITY = "some city";
+
+    private static final int POST = 90000;
+
+    private static final int DATA_AMOUNT = 10000;
+
     public static List<Contract> getTestData() {
-        return IntStream.range(0, 10000).mapToObj(number -> {
+        return IntStream.range(0, DATA_AMOUNT).mapToObj(number -> {
             final String formatted = NUMBER_FORMAT.format(number);
             final Contract contract = new Contract();
-            final String name = String.format("People%s", formatted);
+            final String name = String.format(NAME_FORMAT, formatted);
             contract.setName(name);
-            final String phone = String.format("(000) 0000-%s", formatted);
+            final String phone = String.format(PHONE_FORMAT, formatted);
             contract.setCompanyPhone(phone);
             contract.setCellPhone(phone);
             contract.setHomePhone(phone);
-            contract.setEmail(String.format("%s@example.com", name));
+            contract.setEmail(String.format(EMAIL_FORMAT, name));
             contract.setBirth(createRandomDate());
-            contract.setAddress("somewhere");
-            contract.setCity("some city");
-            contract.setProvince("somewhere");
-            contract.setPost(90000 + number);
+            contract.setAddress(ADDRESS);
+            contract.setCity(CITY);
+            contract.setProvince(ADDRESS);
+            contract.setPost(POST + number);
             return contract;
         }).collect(Collectors.toUnmodifiableList());
     }
