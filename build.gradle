@@ -15,13 +15,13 @@ test {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.18'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
     implementation 'org.apache.poi:poi:5.0.0'
     implementation 'org.apache.poi:poi-ooxml:5.0.0'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.18'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 }
